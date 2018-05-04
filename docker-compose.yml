@@ -5,7 +5,7 @@ services:
         build: ./shepherd
         image: oldwebtoday/shepherd
 
-    shepherd:
+    chromium:
         build: ./browser-chromium-opengl
         image: oldwebtoday/chromium-opengl:65
 
