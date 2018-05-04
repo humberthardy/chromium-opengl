@@ -1,0 +1,11 @@
+version: '2'
+
+services:
+    shepherd:
+        build: ./shepherd
+        image: oldwebtoday/shepherd
+
+    shepherd:
+        build: ./browser-chromium-opengl
+        image: oldwebtoday/chromium-opengl:65
+
