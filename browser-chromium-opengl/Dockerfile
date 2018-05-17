@@ -49,13 +49,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         jwm \
         adobe-flashplugin \
         sudo \
-        gdebi-core \
         autocutsel
 
 
 COPY ${BROWSER_PACKAGE} /tmp/${BROWSER_PACKAGE}
 
-RUN cd /tmp &&  gdebi --non-interactive ${BROWSER_PACKAGE} && rm -f /tmp/*.deb
+RUN cd /tmp &&  dpkg -i /tmp/$BROWSER_PACKAGE || apt-get update && apt-get install -fqqy  && rm -f /tmp/*.deb
 
 RUN cd /tmp && \
     curl -fsSL -O https://svwh.dl.sourceforge.net/project/turbovnc/${TURBOVNC_VERSION}/turbovnc_${TURBOVNC_VERSION}_amd64.deb \
