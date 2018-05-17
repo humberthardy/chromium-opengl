@@ -3,13 +3,6 @@
 
 export GEOMETRY="${SCREEN_WIDTH}x${SCREEN_HEIGHT}"
 mkdir -p ~/.vnc 
-#x11vnc -storepasswd ${VNC_PASS:-secret} ~/.vnc/passwd
-
-# start xvfb
-#sudo Xvfb $DISPLAY -screen 0 $GEOMETRY -ac +extension RANDR > /dev/null 2>&1 &
-
-
-#vncpasswd ${VNC_PASS:-secret}
 
 echo "set vnc password '${VNC_PASS:-secret}'"
 
@@ -36,8 +29,6 @@ if [[ -n "$PROXY_HOST" ]]; then
     export https_proxy=http://$PROXY_HOST:$PROXY_PORT
 fi
 
-#wget -O /dev/null "http://set.pywb.proxy/setts?ts=$TS"
-
 function shutdown {
   kill -s SIGTERM $NODE_PID
   wait $NODE_PID
@@ -50,14 +41,6 @@ sudo chmod a-x /bin/*term
 # Run browser here
 echo "Starting browser, command is $@"
 eval "$@" &
-  
-# start controller app
-#python /app/browser_app.py &
-
-#autocutsel -s PRIMARY -fork &
-
-# start vnc
-#x11vnc -forever -ncache_cr -xdamage -usepw -shared -rfbport 5900 -display $DISPLAY > /dev/null 2>&1 &
 
 
 TIMEOUT_PARAM=""

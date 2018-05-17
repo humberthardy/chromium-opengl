@@ -3,18 +3,13 @@
 # https://turbovnc.org
 # https://virtualgl.org
 
-# xhost +
-# docker build -t 4d .
-# docker run --init --runtime=nvidia --name=4d --rm -i -v /tmp/.X11-unix/X0:/tmp/.X11-unix/X0 -e VNC_PASS=password -p 6080:6080 4d
-# docker exec -ti 4d vglrun chromium-browser --disable-gpu-sandbox
-
 FROM nvidia/opengl:1.0-glvnd-runtime
 
 ARG TURBOVNC_VERSION=2.1.2
 ARG VIRTUALGL_VERSION=2.5.2
 ARG LIBJPEG_VERSION=1.5.2
 ARG WEBSOCKIFY_VERSION=0.8.0
-ARG NOVNC_VERSION=1.0.0-beta
+ARG BROWSER_PACKAGE=TDB
 
 ENV NVIDIA_DRIVER_CAPABILITIES ${NVIDIA_DRIVER_CAPABILITIES},display
 
@@ -37,7 +32,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         xauth \
         xfonts-base \
         xkb-data \
-        chromium-browser \
         ca-certificates \
         python2.7 \
         python-pip \
@@ -47,17 +41,21 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libssl-dev libffi-dev \
         net-tools \
         dnsutils \
-	pulseaudio \
-	libopus-dev \
-	gstreamer1.0 \
+        pulseaudio \
+        libopus-dev \
+        gstreamer1.0 \
         libnss3-tools \
         wmctrl \
         jwm \
-        chromium-browser \
         adobe-flashplugin \
         sudo \
-        autocutsel && \
-    rm -rf /var/lib/apt/lists/*
+        gdebi-core \
+        autocutsel
+
+
+COPY ${BROWSER_PACKAGE} /tmp/${BROWSER_PACKAGE}
+
+RUN cd /tmp &&  gdebi ${BROWSER_PACKAGE} && rm -f /tmp/*.deb
 
 RUN cd /tmp && \
     curl -fsSL -O https://svwh.dl.sourceforge.net/project/turbovnc/${TURBOVNC_VERSION}/turbovnc_${TURBOVNC_VERSION}_amd64.deb \
@@ -90,6 +88,7 @@ RUN pip install -U -r requirements.txt
 
 ADD run_browser /usr/bin/run_browser
 
+RUN rm -rf /var/lib/apt/lists/*
 
 EXPOSE 6080
 EXPOSE 6082
@@ -105,10 +104,10 @@ RUN useradd browser --shell /bin/bash --create-home \
 
 COPY audio_proxy.py /app/audio_proxy.py
 COPY entry_point.sh /app/entrypoint.sh
-copy audio_stream.sh /app/audio_stream.sh
-copy run.sh /app/run.sh
-copy run_browser /app/run_browser
-copy jwmrc /home/browser/.jwmrc
+COPY audio_stream.sh /app/audio_stream.sh
+COPY run.sh /app/run.sh
+COPY run_browser /app/run_browser
+COPY jwmrc /home/browser/.jwmrc
 
 
 RUN chmod +x /app/entrypoint.sh
