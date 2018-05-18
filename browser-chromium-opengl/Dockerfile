@@ -9,7 +9,7 @@ ARG TURBOVNC_VERSION=2.1.2
 ARG VIRTUALGL_VERSION=2.5.2
 ARG LIBJPEG_VERSION=1.5.2
 ARG WEBSOCKIFY_VERSION=0.8.0
-ARG CHROMIUM_VERSION=TDB
+ARG CHROMIUM_VERSION=TBD
 
 ENV NVIDIA_DRIVER_CAPABILITIES ${NVIDIA_DRIVER_CAPABILITIES},display
 
@@ -56,7 +56,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 COPY ${CHROMIUM_VERSION} /tmp/${CHROMIUM_VERSION}
 
-RUN  gdebi --non-interactive /tmp/${CHROMIUM_VERSION}/chromium-codecs-ffmpeg-extra_${CHROMIUM_VERSION}_amd64.deb && gdebi --non-interactive /tmp/${CHROMIUM_VERSION}/chromium-browser_${CHROMIUM_VERSION}_amd64.deb   && rm -rf /tmp/${CHROMIUM_VERSION}
+RUN  gdebi --non-interactive /tmp/${CHROMIUM_VERSION}/chromium-codecs-ffmpeg-extra_${CHROMIUM_VERSION}_amd64.deb && \
+     gdebi --non-interactive /tmp/${CHROMIUM_VERSION}/chromium-browser_${CHROMIUM_VERSION}_amd64.deb && \   
+     rm -rf /tmp/${CHROMIUM_VERSION}
 
 RUN cd /tmp && \
     curl -fsSL -O https://svwh.dl.sourceforge.net/project/turbovnc/${TURBOVNC_VERSION}/turbovnc_${TURBOVNC_VERSION}_amd64.deb \

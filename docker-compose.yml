@@ -11,5 +11,5 @@ services:
           args:
             CHROMIUM_VERSION: 65.0.3325.181-0ubuntu0.16.04.1 
 
-        image: oldwebtoday/chromium-opengl:66
+        image: oldwebtoday/chromium-opengl:65
 
