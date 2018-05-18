@@ -9,7 +9,7 @@ ARG TURBOVNC_VERSION=2.1.2
 ARG VIRTUALGL_VERSION=2.5.2
 ARG LIBJPEG_VERSION=1.5.2
 ARG WEBSOCKIFY_VERSION=0.8.0
-ARG BROWSER_PACKAGE=TDB
+ARG CHROMIUM_VERSION=TDB
 
 ENV NVIDIA_DRIVER_CAPABILITIES ${NVIDIA_DRIVER_CAPABILITIES},display
 
@@ -49,12 +49,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         jwm \
         adobe-flashplugin \
         sudo \
-        autocutsel
+        autocutsel \
+        gdebi
+        
 
 
-COPY ${BROWSER_PACKAGE} /tmp/${BROWSER_PACKAGE}
+COPY ${CHROMIUM_VERSION} /tmp/${CHROMIUM_VERSION}
 
-RUN cd /tmp &&  dpkg -i /tmp/$BROWSER_PACKAGE || apt-get update && apt-get install -fqqy  && rm -f /tmp/*.deb
+RUN  gdebi --non-interactive /tmp/${CHROMIUM_VERSION}/chromium-codecs-ffmpeg-extra_${CHROMIUM_VERSION}_amd64.deb && gdebi --non-interactive /tmp/${CHROMIUM_VERSION}/chromium-browser_${CHROMIUM_VERSION}_amd64.deb   && rm -rf /tmp/${CHROMIUM_VERSION}
 
 RUN cd /tmp && \
     curl -fsSL -O https://svwh.dl.sourceforge.net/project/turbovnc/${TURBOVNC_VERSION}/turbovnc_${TURBOVNC_VERSION}_amd64.deb \

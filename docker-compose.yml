@@ -9,7 +9,7 @@ services:
         build:
           context: ./browser-chromium-opengl
           args:
-            BROWSER_PACKAGE: chromium-browser_66.0.3359.139-0ubuntu0.16.04.3_amd64.deb
+            CHROMIUM_VERSION: 65.0.3325.181-0ubuntu0.16.04.1 
 
         image: oldwebtoday/chromium-opengl:66
 
