@@ -1,18 +1,20 @@
-# Chromium with openGL support for [webrecorder](http://webrecorder.io) stack
+# PoC - Chromium with openGL support for [webrecorder](http://webrecorder.io) stack
+
+Ubuntu 16.04 was used for this demonstration.
 
 ## Requirements
 1. Ubuntu with X11 server
 2. `nvidia` GPU
 3. docker 
 4. [nvidia runtime for docker engine](https://github.com/NVIDIA/nvidia-docker)
-5. nvidia driver > 390 (`sudo apt-get install nvidia-396`) 
+5. nvidia driver > 390 (tested with `nvidia-396`) 
 
 
 ## How to use it
 
-1. Allow incomming connections to your X11 server (Run `xhost +` on your host OS)
+1. Allow incoming connections to your X11 server (Run `xhost +` on your host OS)
 2. Build the new `oldwebtoday/sphepherd` and `oldwebtoday/chromium-opengl:65` images by running `docker-compose build` from the terminal 
-3. Restart your webrecorder's stack  
+3. Restart your `webrecorder`'s stack  
 
 This modified version of `oldwebtoday/sphepherd` starts the browsers with:
    - `nvidia` runtime (equivalent to `docker run --runtime=nvidia`)
